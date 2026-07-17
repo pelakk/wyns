@@ -237,24 +237,6 @@
             transform: scale(1);
         }
 
-        .trust-badges {
-            color: #64748b;
-            font-size: 13px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .trust-badges span {
-            color: #fff;
-            background: #1e293b;
-            padding: 3px 8px;
-            border-radius: 5px;
-            border: 1px solid #334155;
-        }
-
         /* Modal Z FOMO */
         .modal-overlay {
             position: absolute;
@@ -347,7 +329,8 @@
     <div class="particles-container" id="particles"></div>
 
     <div class="mobile-container">
-        <div class="top-bar">DARMOWE SPINY: <span id="spin-counter">3</span></div>
+        <!-- Zmieniono z 3 na 2 -->
+        <div class="top-bar">DARMOWE SPINY: <span id="spin-counter">2</span></div>
 
         <div class="slot-machine-wrapper">
             <div class="slot-machine">
@@ -359,23 +342,43 @@
         </div>
 
         <div class="controls">
-            <button class="spin-btn" id="spin-btn">🎰 KRĘĆ TERAZ</button>
+            <button class="spin-btn" id="spin-btn">🎰 ZAKRĘĆ I ZGARNIJ BONUS</button>
         </div>
 
         <div class="modal-overlay" id="modal">
             <div class="modal-content">
                 <h2>MEGA WYGRANA!</h2>
-                <p style="font-size: 20px; margin-top: 10px; color: #fff;">Trafiłeś Jackpota dla Polaków!<br>Twoje <strong>100 Darmowych Spinów</strong> jest gotowe do odbioru.</p>
+                <p style="font-size: 20px; margin-top: 10px; color: #fff;">Trafiłeś Jackpota!<br>Twoje <strong>100 Darmowych Spinów</strong> jest gotowe do odbioru.</p>
                 <div class="fomo-timer">Zarezerwowane przez: <span id="timer">04:59</span></div>
                 
                 <!-- TUTAJ WKLEJ SWÓJ LINK -->
-                <a href="https://adfloe.trk2afse.com/click?pid=110&offer_id=510" class="claim-btn">ODBIERZ TERAZ</a>
-                <p style="font-size: 13px; color: #aaa; margin-top: 20px;">Wymagany minimalny depozyt aktywacyjny (40 PLN)</p>
+                <a href="https://falconix.trk2afse.com/click?pid=7&offer_id=162" class="claim-btn">ODBIERZ TERAZ</a>
             </div>
         </div>
     </div>
 
     <script>
+        // ==========================================
+        // PRZECHWYTYWANIE PARAMETRU SUB3 Z URL
+        // ==========================================
+        const urlParams = new URLSearchParams(window.location.search);
+        const sub3Param = urlParams.get('sub3');
+
+        if (sub3Param) {
+            const claimBtn = document.querySelector('.claim-btn');
+            if (claimBtn) {
+                try {
+                    // Używamy obiektu URL, aby bezpiecznie dokleić parametr do istniejącego linku
+                    const targetUrl = new URL(claimBtn.href);
+                    targetUrl.searchParams.set('sub3', sub3Param);
+                    claimBtn.href = targetUrl.toString();
+                } catch (e) {
+                    console.error("Błąd przy parsowaniu URL:", e);
+                }
+            }
+        }
+        // ==========================================
+
         // Generowanie cząsteczek tła (Monety i iskry)
         const particlesContainer = document.getElementById('particles');
         const particleIcons = ['🪙', '💰', '✨', '💸'];
@@ -401,7 +404,8 @@
         const modal = document.getElementById('modal');
         const timerEl = document.getElementById('timer');
 
-        let spinsLeft = 3;
+        // Ustawiono liczbę obrotów na 2
+        let spinsLeft = 2;
         let isSpinning = false;
 
         function getRandomSymbol() {
@@ -432,22 +436,26 @@
 
             setTimeout(() => {
                 reels[0].el.classList.remove('spinning');
-                if (spinsLeft === 2) reels[0].sym.innerText = '💰';
-                if (spinsLeft === 1) reels[0].sym.innerText = '7️⃣';
+                // Pierwszy obrót (został 1) - Pieniądz
+                if (spinsLeft === 1) reels[0].sym.innerText = '💰';
+                // Drugi obrót (zostało 0) - Jackpot Diament
                 if (spinsLeft === 0) reels[0].sym.innerText = '💎';
                 if (navigator.vibrate) navigator.vibrate(30);
 
                 setTimeout(() => {
                     reels[1].el.classList.remove('spinning');
-                    if (spinsLeft === 2) reels[1].sym.innerText = '💰';
-                    if (spinsLeft === 1) reels[1].sym.innerText = '🍒';
+                    // Pierwszy obrót (został 1) - Pieniądz
+                    if (spinsLeft === 1) reels[1].sym.innerText = '💰';
+                    // Drugi obrót (zostało 0) - Jackpot Diament
                     if (spinsLeft === 0) reels[1].sym.innerText = '💎';
                     if (navigator.vibrate) navigator.vibrate(30);
 
                     setTimeout(() => {
                         reels[2].el.classList.remove('spinning');
-                        if (spinsLeft === 2) reels[2].sym.innerText = '🍉'; 
-                        if (spinsLeft === 1) reels[2].sym.innerText = '🔔'; 
+                        // Pierwszy obrót (został 1) - Arbuz (Przegrana / Prawie wygrana)
+                        if (spinsLeft === 1) reels[2].sym.innerText = '🍉'; 
+                        
+                        // Drugi obrót (zostało 0) - Jackpot Diament (Wygrana)
                         if (spinsLeft === 0) {
                             reels[2].sym.innerText = '💎'; 
                             

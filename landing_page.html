@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Odbierz Bonus - Burning Coins 20</title>
+
+    <style>
+      /* Reset podstawowych marginesów i paddingów dla spójności w różnych przeglądarkach */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Stylizacja tła strony (gradient) i wyśrodkowanie zawartości */
+      body {
+        /* Nowoczesny font systemowy dla czystego wyglądu bez zewnętrznych bibliotek typu Google Fonts */
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+
+        /* Tło odwzorowujące to ze zrzutu ekranu */
+        background: linear-gradient(
+          135deg,
+          #df71ec 0%,
+          #a461f0 50%,
+          #744cf4 100%
+        );
+
+        /* Zapewnienie, że tło zawsze zajmuje minimum 100% wysokości ekranu */
+        min-height: 100vh;
+
+        /* Użycie Flexboxa do wyśrodkowania karty na środku ekranu */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        /* Drobny margines na wypadek bardzo małych ekranów mobilnych */
+        padding: 20px;
+      }
+
+      /* Główny kontener karty */
+      .card {
+        background-color: #ffffff;
+        width: 100%;
+        max-width: 400px; /* Maksymalna szerokość karty */
+        border-radius: 12px; /* Zaokrąglone rogi karty */
+        overflow: hidden; /* Przycina obrazek na górze do zaokrąglonych rogów */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Delikatny cień dodający głębi */
+      }
+
+      /* Stylizacja sekcji obrazka */
+      .card-image img {
+        width: 100%;
+        display: block; /* Usuwa domyślny, drobny margines pod obrazkami w HTML */
+        /* Obraz jest zaciągany z podanego przez Ciebie pliku */
+      }
+
+      /* Kontener na teksty i przyciski (dolna część karty) */
+      .card-content {
+        padding: 24px 24px 32px 24px;
+      }
+
+      /* Główny tekst informacyjny */
+      .description {
+        color: #333333;
+        font-size: 15px;
+        margin-bottom: 16px;
+      }
+
+      /* Wytłuszczenie w głównym tekście */
+      .description strong {
+        font-weight: bold;
+      }
+
+      /* Tekst z palcami/emotikonami wskazującymi w dół */
+      .action-text {
+        text-align: center;
+        color: #333333;
+        font-size: 15px;
+        margin-bottom: 24px;
+      }
+
+      /* Stylizacja przycisku Telegram */
+      .btn-telegram {
+        display: block;
+        width: 100%;
+        background-color: #2588d8; /* Niebieski kolor w stylu Telegrama */
+        color: #ffffff;
+        text-decoration: none;
+        border: none;
+        text-align: center;
+        padding: 14px 20px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        transition: background-color 0.2s ease-in-out;
+        cursor: pointer;
+      }
+
+      /* Efekt po najechaniu myszką na przycisk (Hover) */
+      .btn-telegram:hover {
+        background-color: #2b79b9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <!-- Sekcja górna z wstawionym Twoim plikiem graficznym -->
+      <div class="card-image">
+        <img src="vavada2.png" alt="Burning Coins 20" />
+      </div>
+
+      <!-- Sekcja dolna z tekstami i przyciskiem -->
+      <div class="card-content">
+        <div>
+          <p class="description">
+            🎰 Darmowe <strong>100 spinów</strong> na Dog House
+          </p>
+          <p class="description">
+            💰 <strong>100%</strong> bonusu przy pierwszej wpłacie
+          </p>
+          <p class="description">🔙 <strong>10%</strong> cashback</p>
+
+          <p class="action-text">👇 Odbierz bonus 👇</p>
+        </div>
+        <button class="btn-telegram">Telegram</button>
+        <!-- Zgodnie z prośbą, przycisk Messenger został stąd usunięty -->
+      </div>
+    </div>
+    <script>
+      document
+        .querySelector(".btn-telegram")
+        .addEventListener("click", function () {
+          // Inicjalizacja obiektu do odczytu parametrów z paska adresu URL
+          const urlParams = new URLSearchParams(window.location.search);
+
+          // Pobranie wartości parametru 'sub3'
+          // Jeśli parametr nie istnieje, zostanie użyty pusty ciąg znaków
+          const sub3 = urlParams.get("sub3") || "";
+
+          // Budowanie linku docelowego z bezpiecznym zakodowaniem wartości parametru
+          const targetUrl =
+            "https://t.me/VavadaPOL_bot?start=" + encodeURIComponent(sub3);
+
+          // Przekierowanie użytkownika na nowy adres
+          window.location.href = targetUrl;
+        });
+    </script>
+  </body>
+</html>

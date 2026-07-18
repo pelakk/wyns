@@ -1,481 +1,156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wygraj Darmowe Spiny</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Odbierz Bonus - Burning Coins 20</title>
+
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            user-select: none;
-        }
+      /* Reset podstawowych marginesów i paddingów dla spójności w różnych przeglądarkach */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-        body {
-            background-color: #0b0c10;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #1f0b2e 0%, #000000 100%);
-            transition: background-color 0.1s ease;
-        }
+      /* Stylizacja tła strony (gradient) i wyśrodkowanie zawartości */
+      body {
+        /* Nowoczesny font systemowy dla czystego wyglądu bez zewnętrznych bibliotek typu Google Fonts */
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
 
-        body.mega-win-flash {
-            animation: strobe 0.3s ease-in-out 3;
-        }
+        /* Tło odwzorowujące to ze zrzutu ekranu */
+        background: linear-gradient(
+          135deg,
+          #df71ec 0%,
+          #a461f0 50%,
+          #744cf4 100%
+        );
 
-        @keyframes strobe {
-            0%, 100% { background: radial-gradient(circle at center, #1f0b2e 0%, #000000 100%); }
-            50% { background: radial-gradient(circle at center, #ffd700 0%, #ff8c00 100%); }
-        }
+        /* Zapewnienie, że tło zawsze zajmuje minimum 100% wysokości ekranu */
+        min-height: 100vh;
 
-        /* Ticker - Dowód Społeczny */
-        .live-ticker-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            border-bottom: 1px solid #ff0055;
-            padding: 6px 0;
-            overflow: hidden;
-            z-index: 50;
-            box-shadow: 0 5px 15px rgba(255, 0, 85, 0.3);
-        }
+        /* Użycie Flexboxa do wyśrodkowania karty na środku ekranu */
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        .live-ticker {
-            white-space: nowrap;
-            display: inline-block;
-            font-size: 12px;
-            font-weight: bold;
-            color: #00ff87;
-            animation: scrollTicker 15s linear infinite;
-        }
+        /* Drobny margines na wypadek bardzo małych ekranów mobilnych */
+        padding: 20px;
+      }
 
-        @keyframes scrollTicker {
-            0% { transform: translateX(100vw); }
-            100% { transform: translateX(-150%); }
-        }
+      /* Główny kontener karty */
+      .card {
+        background-color: #ffffff;
+        width: 100%;
+        max-width: 400px; /* Maksymalna szerokość karty */
+        border-radius: 12px; /* Zaokrąglone rogi karty */
+        overflow: hidden; /* Przycina obrazek na górze do zaokrąglonych rogów */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Delikatny cień dodający głębi */
+      }
 
-        /* Pływające tło */
-        .particles-container {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 1;
-        }
+      /* Stylizacja sekcji obrazka */
+      .card-image img {
+        width: 100%;
+        display: block; /* Usuwa domyślny, drobny margines pod obrazkami w HTML */
+        /* Obraz jest zaciągany z podanego przez Ciebie pliku */
+      }
 
-        .particle {
-            position: absolute;
-            bottom: -50px;
-            opacity: 0.15;
-            animation: floatUp linear infinite;
-            filter: blur(1px);
-        }
+      /* Kontener na teksty i przyciski (dolna część karty) */
+      .card-content {
+        padding: 24px 24px 32px 24px;
+      }
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-120vh) rotate(360deg) scale(1.2); opacity: 0; }
-        }
+      /* Główny tekst informacyjny */
+      .description {
+        color: #333333;
+        font-size: 15px;
+        margin-bottom: 16px;
+      }
 
-        /* Główny kontener */
-        .mobile-container {
-            width: 100%;
-            max-width: 480px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 50px 15px 30px 15px;
-            position: relative;
-            z-index: 10;
-            gap: 25px;
-        }
+      /* Wytłuszczenie w głównym tekście */
+      .description strong {
+        font-weight: bold;
+      }
 
-        .top-bar {
-            background: linear-gradient(90deg, #ff0055, #ffaa00);
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-weight: 900;
-            font-size: 20px;
-            text-transform: uppercase;
-            box-shadow: 0 0 25px rgba(255, 170, 0, 0.7);
-            animation: glow-bar 1.5s infinite alternate;
-            border: 2px solid #fff;
-        }
+      /* Tekst z palcami/emotikonami wskazującymi w dół */
+      .action-text {
+        text-align: center;
+        color: #333333;
+        font-size: 15px;
+        margin-bottom: 24px;
+      }
 
-        @keyframes glow-bar {
-            0% { box-shadow: 0 0 10px rgba(255, 0, 85, 0.5); }
-            100% { box-shadow: 0 0 30px rgba(255, 170, 0, 1); transform: scale(1.02); }
-        }
+      /* Stylizacja przycisku Telegram */
+      .btn-telegram {
+        display: block;
+        width: 100%;
+        background-color: #2588d8; /* Niebieski kolor w stylu Telegrama */
+        color: #ffffff;
+        text-decoration: none;
+        border: none;
+        text-align: center;
+        padding: 14px 20px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        transition: background-color 0.2s ease-in-out;
+        cursor: pointer;
+      }
 
-        /* Ulepszona Maszyna */
-        .slot-machine-wrapper {
-            background: #1a1a2e;
-            padding: 15px;
-            border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(255, 215, 0, 0.2);
-            border: 2px solid #333;
-            position: relative;
-        }
-
-        .slot-machine-wrapper::before, .slot-machine-wrapper::after {
-            content: '';
-            position: absolute;
-            top: 20px; bottom: 20px;
-            width: 8px;
-            background: #ff0055;
-            border-radius: 10px;
-            box-shadow: 0 0 15px #ff0055;
-            animation: blinkLights 0.5s infinite alternate;
-        }
-        .slot-machine-wrapper::before { left: -4px; }
-        .slot-machine-wrapper::after { right: -4px; }
-
-        @keyframes blinkLights {
-            0% { background: #ff0055; box-shadow: 0 0 10px #ff0055; }
-            100% { background: #ffaa00; box-shadow: 0 0 20px #ffaa00; }
-        }
-
-        .slot-machine {
-            background: #0a0a10;
-            border: 6px solid #ffd700;
-            border-radius: 15px;
-            padding: 20px 10px;
-            display: flex;
-            gap: 12px;
-            box-shadow: inset 0 0 40px rgba(0,0,0,1);
-            position: relative;
-        }
-
-        .slot-machine-tag {
-            position: absolute;
-            top: -22px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(to bottom, #ffe000, #ff8c00);
-            color: #000;
-            padding: 4px 20px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 900;
-            box-shadow: 0 0 20px #ffd700;
-            border: 2px solid #fff;
-            white-space: nowrap;
-        }
-
-        .reel {
-            width: 85px;
-            height: 110px;
-            background: linear-gradient(180deg, #d4d4d4 0%, #ffffff 50%, #d4d4d4 100%);
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 60px;
-            box-shadow: inset 0 15px 25px rgba(0,0,0,0.6);
-            border: 3px solid #222;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .reel.spinning .symbol {
-            animation: blurSpin 0.12s linear infinite;
-            filter: blur(4px);
-        }
-
-        @keyframes blurSpin {
-            0% { transform: translateY(-100%); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(100%); opacity: 0; }
-        }
-
-        .controls {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .spin-btn {
-            background: linear-gradient(to bottom, #00ff87, #00b3ff);
-            color: #000;
-            border: none;
-            border-radius: 50px;
-            width: 90%;
-            padding: 22px;
-            font-size: 26px;
-            font-weight: 900;
-            text-transform: uppercase;
-            box-shadow: 0 0 30px rgba(0, 255, 135, 0.6), inset 0 -6px 10px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: transform 0.1s;
-            animation: pulse-btn 1s infinite alternate;
-        }
-
-        @keyframes pulse-btn {
-            0% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 255, 135, 0.4); }
-            100% { transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 255, 135, 0.8); }
-        }
-
-        .spin-btn:active { transform: scale(0.95) !important; }
-        .spin-btn:disabled {
-            background: #333;
-            color: #666;
-            box-shadow: none;
-            animation: none;
-            transform: scale(1);
-        }
-
-        /* Modal Z FOMO */
-        .modal-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            z-index: 100;
-            backdrop-filter: blur(15px);
-        }
-
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .modal-content {
-            background: radial-gradient(circle, #2b0f4c 0%, #0f051d 100%);
-            border: 4px solid #00ff87;
-            border-radius: 25px;
-            padding: 35px 20px;
-            text-align: center;
-            width: 92%;
-            box-shadow: 0 0 60px rgba(0, 255, 135, 0.4);
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modal-content::before {
-            content: '🎇';
-            position: absolute;
-            top: -20px; right: -20px;
-            font-size: 100px; opacity: 0.2;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.1) translateY(1000px); opacity: 0; }
-            80% { transform: scale(1.05) translateY(-10px); opacity: 1; }
-            100% { transform: scale(1) translateY(0); }
-        }
-
-        .modal-content h2 {
-            color: #ffd700;
-            font-size: 42px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 25px #ffd700;
-        }
-
-        .fomo-timer {
-            background: #ff0055;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 12px;
-            font-size: 20px;
-            font-weight: bold;
-            display: inline-block;
-            margin: 15px 0;
-            animation: blink 1s infinite;
-            border: 2px solid #fff;
-        }
-
-        @keyframes blink { 50% { opacity: 0.8; box-shadow: 0 0 15px #ff0055;} }
-
-        .claim-btn {
-            display: block;
-            background: linear-gradient(90deg, #ffaa00, #ff0055);
-            color: white;
-            text-decoration: none;
-            padding: 22px;
-            border-radius: 15px;
-            font-size: 24px;
-            font-weight: 900;
-            text-transform: uppercase;
-            box-shadow: 0 10px 30px rgba(255, 0, 85, 0.6);
-            margin-top: 15px;
-            border: 2px solid #fff;
-        }
+      /* Efekt po najechaniu myszką na przycisk (Hover) */
+      .btn-telegram:hover {
+        background-color: #2b79b9;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="card">
+      <!-- Sekcja górna z wstawionym Twoim plikiem graficznym -->
+      <div class="card-image">
+        <img src="vavada2.png" alt="Burning Coins 20" />
+      </div>
 
-    <div class="live-ticker-container">
-        <div class="live-ticker">
-            🔥 Maciej właśnie wpłacił 40 PLN i odebrał 100 spinów &nbsp; • &nbsp; 💰 Anna wygrała 2 450 PLN (Wypłata BLIK) &nbsp; • &nbsp; ⚡ Kamil odebrał Bonus Powitalny &nbsp; • &nbsp; 🎰 Zostało tylko 14 darmowych pakietów!
+      <!-- Sekcja dolna z tekstami i przyciskiem -->
+      <div class="card-content">
+        <div>
+          <p class="description">
+            🎰 Darmowe <strong>100 spinów</strong> na Dog House
+          </p>
+          <p class="description">
+            💰 <strong>100%</strong> bonusu przy pierwszej wpłacie
+          </p>
+          <p class="description">🔙 <strong>10%</strong> cashback</p>
+
+          <p class="action-text">👇 Odbierz bonus 👇</p>
         </div>
+        <button class="btn-telegram">Telegram</button>
+        <!-- Zgodnie z prośbą, przycisk Messenger został stąd usunięty -->
+      </div>
     </div>
-
-    <div class="particles-container" id="particles"></div>
-
-    <div class="mobile-container">
-        <!-- Zmieniono z 3 na 2 -->
-        <div class="top-bar">DARMOWE SPINY: <span id="spin-counter">2</span></div>
-
-        <div class="slot-machine-wrapper">
-            <div class="slot-machine">
-                <div class="slot-machine-tag">💎 POLSKI JACKPOT 💎</div>
-                <div class="reel" id="reel1"><div class="symbol">🍒</div></div>
-                <div class="reel" id="reel2"><div class="symbol">🔔</div></div>
-                <div class="reel" id="reel3"><div class="symbol">🍋</div></div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <button class="spin-btn" id="spin-btn">🎰 ZAKRĘĆ I ZGARNIJ BONUS</button>
-        </div>
-
-        <div class="modal-overlay" id="modal">
-            <div class="modal-content">
-                <h2>MEGA WYGRANA!</h2>
-                <p style="font-size: 20px; margin-top: 10px; color: #fff;">Trafiłeś Jackpota!<br>Twoje <strong>100 Darmowych Spinów</strong> jest gotowe do odbioru.</p>
-                <div class="fomo-timer">Zarezerwowane przez: <span id="timer">04:59</span></div>
-                
-                <!-- TUTAJ WKLEJ SWÓJ LINK -->
-                <a href="https://falconix.trk2afse.com/click?pid=7&offer_id=162" class="claim-btn">ODBIERZ TERAZ</a>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // ==========================================
-        // PRZECHWYTYWANIE PARAMETRU SUB3 Z URL
-        // ==========================================
-        const urlParams = new URLSearchParams(window.location.search);
-        const sub3Param = urlParams.get('sub3');
+      document
+        .querySelector(".btn-telegram")
+        .addEventListener("click", function () {
+          // Inicjalizacja obiektu do odczytu parametrów z paska adresu URL
+          const urlParams = new URLSearchParams(window.location.search);
 
-        if (sub3Param) {
-            const claimBtn = document.querySelector('.claim-btn');
-            if (claimBtn) {
-                try {
-                    // Używamy obiektu URL, aby bezpiecznie dokleić parametr do istniejącego linku
-                    const targetUrl = new URL(claimBtn.href);
-                    targetUrl.searchParams.set('sub3', sub3Param);
-                    claimBtn.href = targetUrl.toString();
-                } catch (e) {
-                    console.error("Błąd przy parsowaniu URL:", e);
-                }
-            }
-        }
-        // ==========================================
+          // Pobranie wartości parametru 'sub3'
+          // Jeśli parametr nie istnieje, zostanie użyty pusty ciąg znaków
+          const sub3 = urlParams.get("sub3") || "";
 
-        // Generowanie cząsteczek tła (Monety i iskry)
-        const particlesContainer = document.getElementById('particles');
-        const particleIcons = ['🪙', '💰', '✨', '💸'];
-        for (let i = 0; i < 25; i++) {
-            let p = document.createElement('div');
-            p.className = 'particle';
-            p.innerText = particleIcons[Math.floor(Math.random() * particleIcons.length)];
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.fontSize = (Math.random() * 20 + 15) + 'px';
-            p.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            p.style.animationDelay = (Math.random() * 5) + 's';
-            particlesContainer.appendChild(p);
-        }
+          // Budowanie linku docelowego z bezpiecznym zakodowaniem wartości parametru
+          const targetUrl =
+            "https://t.me/VavadaPOL_bot?start=" + encodeURIComponent(sub3);
 
-        const symbols = ['🍒', '🍋', '🔔', '🍉', '🍇', '💎', '7️⃣', '💰'];
-        const reels = [
-            { el: document.getElementById('reel1'), sym: document.querySelector('#reel1 .symbol') },
-            { el: document.getElementById('reel2'), sym: document.querySelector('#reel2 .symbol') },
-            { el: document.getElementById('reel3'), sym: document.querySelector('#reel3 .symbol') }
-        ];
-        const spinBtn = document.getElementById('spin-btn');
-        const counterText = document.getElementById('spin-counter');
-        const modal = document.getElementById('modal');
-        const timerEl = document.getElementById('timer');
-
-        // Ustawiono liczbę obrotów na 2
-        let spinsLeft = 2;
-        let isSpinning = false;
-
-        function getRandomSymbol() {
-            return symbols[Math.floor(Math.random() * symbols.length)];
-        }
-
-        function startFomoTimer() {
-            let time = 299;
-            setInterval(() => {
-                let min = Math.floor(time / 60);
-                let sec = time % 60;
-                timerEl.innerText = `0${min}:${sec < 10 ? '0' : ''}${sec}`;
-                if(time > 0) time--;
-            }, 1000);
-        }
-
-        spinBtn.addEventListener('click', () => {
-            if (isSpinning || spinsLeft <= 0) return;
-
-            isSpinning = true;
-            spinBtn.disabled = true;
-            spinsLeft--;
-            counterText.innerText = spinsLeft;
-
-            if (navigator.vibrate) navigator.vibrate(50);
-
-            reels.forEach(r => r.el.classList.add('spinning'));
-
-            setTimeout(() => {
-                reels[0].el.classList.remove('spinning');
-                // Pierwszy obrót (został 1) - Pieniądz
-                if (spinsLeft === 1) reels[0].sym.innerText = '💰';
-                // Drugi obrót (zostało 0) - Jackpot Diament
-                if (spinsLeft === 0) reels[0].sym.innerText = '💎';
-                if (navigator.vibrate) navigator.vibrate(30);
-
-                setTimeout(() => {
-                    reels[1].el.classList.remove('spinning');
-                    // Pierwszy obrót (został 1) - Pieniądz
-                    if (spinsLeft === 1) reels[1].sym.innerText = '💰';
-                    // Drugi obrót (zostało 0) - Jackpot Diament
-                    if (spinsLeft === 0) reels[1].sym.innerText = '💎';
-                    if (navigator.vibrate) navigator.vibrate(30);
-
-                    setTimeout(() => {
-                        reels[2].el.classList.remove('spinning');
-                        // Pierwszy obrót (został 1) - Arbuz (Przegrana / Prawie wygrana)
-                        if (spinsLeft === 1) reels[2].sym.innerText = '🍉'; 
-                        
-                        // Drugi obrót (zostało 0) - Jackpot Diament (Wygrana)
-                        if (spinsLeft === 0) {
-                            reels[2].sym.innerText = '💎'; 
-                            
-                            document.body.classList.add('mega-win-flash');
-                            if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 500]);
-                            
-                            setTimeout(() => {
-                                modal.classList.add('active');
-                                startFomoTimer();
-                            }, 800);
-                        }
-
-                        if (spinsLeft > 0) {
-                            isSpinning = false;
-                            spinBtn.disabled = false;
-                        }
-                    }, 500); 
-                }, 400); 
-            }, 800); 
+          // Przekierowanie użytkownika na nowy adres
+          window.location.href = targetUrl;
         });
     </script>
-</body>
+  </body>
 </html>
